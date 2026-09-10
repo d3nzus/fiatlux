@@ -5,19 +5,81 @@
   <i>"Let there be light."</i>
 </p>
 
-**FiatLux** is a CLI for automatically setting up custom scaffolding for any project.
+**FiatLux** is a CLI for automatically setting up custom scaffolding for any project. It lets you define your preferred project setup once, then reproduce it whenever you start something new.
 
 For developers working with languages or frameworks that lack a bootstrapper or who simply prefer not to use the default. FiatLux provides a way to define their own project setup. Customize your directory structure, boilerplate, toolchain, and general-purpose dependencies, then initialize them all with a single command.
 
 ## Features
 
-tbd
-
-**FiatLux** lets you define your preferred project setup once, then reproduce it whenever you start something new.
-
+* **Project initialization** — Quickly create a new project from your setup
+* **User-defined Presets** — Define different setups for different projects with the ***FiatLux DSL***
+* **Dependency Installation** — Automated dependency installation
+* **Command-Line Scripts** — Automated running of setup CLS
 ---
 
+## Custom DSL
+
+FiatLux comes with its own lightweight domain-specific language (DSL) for defining how a project should be initialized.
+
+Instead of manually creating directories, files, and running setup commands every time you start a project, you can describe your desired project structure and setup in a **Blueprint** denoted by the `.fl` file extension . FiatLux's parser interprets the Blueprint when initializing a project.
+
+### Blueprint.fl
+
+A Blueprint consists of several sections that describe different aspects of a project.
+
+```fiatlux
+directories {
+    src {
+        components {
+            App.jsx
+            Button.jsx
+        }
+
+        utils {
+            helpers.js
+        }
+    }
+
+    public {
+        index.html
+    }
+
+    README.md
+}
+
+scripts {
+    "npm install",
+    "npm install react",
+    "npm install -D vite"
+}
+```
+
+This produces:
+
+```text
+my-project/
+├── src/
+│   ├── components/
+│   │   ├── App.jsx
+│   │   └── Button.jsx
+│   ├── utils/
+│   │   └── helpers.js
+│   ├── ...
+│
+├── public/
+│   └── index.html
+│
+└── README.md
+```
+
+Scripts are executed in the order they are defined.
+
+This allows a Blueprint to handle not only the structure of a project, but also the commands required to prepare the dev environment.
+
+
 ## Installation
+
+installation details tba
 
 ### Requirements
 
@@ -31,12 +93,10 @@ fiatlux init <template> <project-name>
 
 ## Project Structure
 
-Explain where Fiat Lux stores its configuration and presets.
-
 ```text
 ~/.fiatlux/
-├── presets
-│   └── genesis.yaml
+├── premade_blueprints
+│   └── react-express.fl
 └── templates/
 ```
 
@@ -53,3 +113,6 @@ Explain where Fiat Lux stores its configuration and presets.
 
 ## 📄 License
 ---
+
+
+
