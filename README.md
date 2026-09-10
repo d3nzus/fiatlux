@@ -5,7 +5,7 @@
   <i>"Let there be light."</i>
 </p>
 
-**FiatLux** is a customizable bootstrapper CLI for automating project setup and scaffolding development environments.
+**FiatLux** is a CLI for automatically setting up custom scaffolding for any project.
 
 For developers working with languages or frameworks that lack a bootstrapper or who simply prefer not to use the default. FiatLux provides a way to define their own project setup. Customize your directory structure, boilerplate, toolchain, and general-purpose dependencies, then initialize them all with a single command.
 

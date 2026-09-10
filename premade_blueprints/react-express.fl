@@ -1,0 +1,39 @@
+# FiatLux blueprint: basic React + Express project
+# Lines starting with # are comments and are stripped by the tokenizer
+
+directories {
+    src {
+        components {
+            Button.js
+            Navbar.js
+        }
+        pages {
+            index.js
+            about.js
+        }
+        main.js
+        styles.css
+    }
+    server {
+        routes {
+            users.js
+            auth.js
+        }
+        server.js
+    }
+    public {
+        favicon.ico
+        index.html
+    }
+    README
+    .gitignore
+    package.json
+}
+
+# scripts run in order after the directory structure is created
+scripts {
+    "npm init -y",
+    "npm install react react-dom",
+    "npm install express cors dotenv",
+    "npm install --save-dev nodemon"
+}
