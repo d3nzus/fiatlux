@@ -1,4 +1,5 @@
-# FiatLux
+<img width="1113" height="381" alt="image" src="https://github.com/user-attachments/assets/0c9fa34e-47b8-45a1-9dcb-b046acba8b2a" />
+
 
 <p align="center">
   <i>"Let there be light."</i>
