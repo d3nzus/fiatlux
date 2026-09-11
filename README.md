@@ -23,7 +23,7 @@ FiatLux comes with its own lightweight domain-specific language (DSL) for defini
 
 Instead of manually creating directories, files, and running setup commands every time you start a project, you can describe your desired project structure and setup in a **Blueprint** denoted by the `.fl` file extension . FiatLux's parser interprets the Blueprint when initializing a project.
 
-View more [here](docs/DSL.md)) 
+You can read more about the DSL [here](docs/DSL.md). 
 
 ## Installation
 

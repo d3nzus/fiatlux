@@ -2,8 +2,6 @@ mod parser;
 mod file_handler;
 
 use clap::{ Parser as Parser, Subcommand };
-use anyhow::Context;
-use std::path::{ Path, PathBuf };
 use crate::file_handler::blueprints_dir;
 
 #[derive(Parser)]
