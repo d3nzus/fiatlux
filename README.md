@@ -23,59 +23,7 @@ FiatLux comes with its own lightweight domain-specific language (DSL) for defini
 
 Instead of manually creating directories, files, and running setup commands every time you start a project, you can describe your desired project structure and setup in a **Blueprint** denoted by the `.fl` file extension . FiatLux's parser interprets the Blueprint when initializing a project.
 
-### Blueprint.fl
-
-A Blueprint consists of several sections that describe different aspects of a project.
-
-```fiatlux
-directories {
-    src {
-        components {
-            App.jsx
-            Button.jsx
-        }
-
-        utils {
-            helpers.js
-        }
-    }
-
-    public {
-        index.html
-    }
-
-    README.md
-}
-
-scripts {
-    "npm install",
-    "npm install react",
-    "npm install -D vite"
-}
-```
-
-This produces:
-
-```text
-my-project/
-├── src/
-│   ├── components/
-│   │   ├── App.jsx
-│   │   └── Button.jsx
-│   ├── utils/
-│   │   └── helpers.js
-│   ├── ...
-│
-├── public/
-│   └── index.html
-│
-└── README.md
-```
-
-Scripts are executed in the order they are defined.
-
-This allows a Blueprint to handle not only the structure of a project, but also the commands required to prepare the dev environment.
-
+View more [here](docs/DSL.md)) 
 
 ## Installation
 
