@@ -184,3 +184,7 @@ pub fn generate_fs(nodes: &[FsNode], root: &Path) -> anyhow::Result<()> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+#[path = "parser_tests.rs"]
+mod tests;

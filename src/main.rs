@@ -3,6 +3,8 @@ mod file_handler;
 
 use clap::{ Parser as Parser, Subcommand };
 use crate::file_handler::blueprints_dir;
+use std::path::{Path, PathBuf};
+use anyhow::Context;
 
 #[derive(Parser)]
 #[command(name = "fiatlux", version, about = "Customizable project bootstrapper")]
