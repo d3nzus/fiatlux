@@ -27,8 +27,21 @@ You can read more about the DSL [here](docs/DSL.md).
 
 ## Installation
 
-installation details tba
+### Windows
 
+1. Go to the [Releases page](https://github.com/d3nzus/fiatlux/releases) and download the latest `fiatlux.exe` and `fl.exe`.
+2. Extract the zip to a permanent folder, e.g. `C:\Users\<you>\bin\`.
+3. Add that folder to your PATH:
+   - Press <kbd>Windows Key</kbd>, search **"Environment Variables"**, open **"Edit the system environment variables"**.
+   - Click **Environment Variables** → under **User variables**, select **Path** → **Edit** → **New**.
+   - Paste the folder path (e.g. `C:\Users\<you>\bin`) → **OK** on all dialogs.
+4. Open a **new** terminal window and verify:
+    ```bash
+    fiatlux --version
+    ```
+
+### macOS / Linux 
+TBA
 ### Requirements
 
 ## How to Use:
