@@ -48,6 +48,13 @@ TBA
 
 Create a project:
 
+Import a template into the local blueprint directory
+
+```bash
+fiatlux import <template-name> <template-path>
+```
+
+Use init to initialize a project based on an imported blueprint
 ```bash
 fiatlux init <template> <project-name>
 ```
