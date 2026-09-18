@@ -1,12 +1,11 @@
 use anyhow::Context;
-use std::path::{ Path, PathBuf };
+use std::path::{Path, PathBuf};
 
 // create fialtux/blueprints folder if not already created, when it exists, return a path to it
 pub fn blueprints_dir() -> anyhow::Result<PathBuf> {
     let base = dirs::config_dir().context("could not determine a config directory for this OS")?;
     let dir = base.join("fiatlux").join("blueprints");
-    std::fs
-        ::create_dir_all(&dir)
+    std::fs::create_dir_all(&dir)
         .with_context(|| format!("could not create blueprints dir `{}`", dir.display()))?;
     Ok(dir)
 }

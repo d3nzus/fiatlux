@@ -37,7 +37,11 @@ fn import_then_list_shows_the_blueprint() {
     let home = tempdir().unwrap();
     let source_dir = tempdir().unwrap();
     let source_file = source_dir.path().join("test.fl");
-    std::fs::write(&source_file, "directories { main.js }\nscripts { \"echo hi\" }").unwrap();
+    std::fs::write(
+        &source_file,
+        "directories { main.js }\nscripts { \"echo hi\" }",
+    )
+    .unwrap();
 
     fiatlux_cmd(home.path())
         .args(["import", "mytemplate", source_file.to_str().unwrap()])

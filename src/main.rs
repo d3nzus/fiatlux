@@ -3,18 +3,11 @@ mod file_handler;
 
 use clap::{ Parser as Parser, Subcommand };
 use crate::file_handler::blueprints_dir;
-use std::path::{Path, PathBuf};
+use std::path::{ Path, PathBuf };
 use anyhow::Context;
 
-#[derive(Parser)]
-#[command(name = "fiatlux", version, about = "Customizable project bootstrapper")]
-struct Cli {
-    #[command(subcommand)]
-    command: Commands,
-}
-
 #[derive(Subcommand)]
-enum Commands {
+pub enum Commands {
     /// <blueprint> <project_name> - initializes project based on blueprint
     Init {
         blueprint: String,
@@ -29,6 +22,13 @@ enum Commands {
         blueprint_name: String,
         source: PathBuf,
     },
+}
+
+#[derive(Parser)]
+#[command(name = "fiatlux", version, about = "Made by D3nzus. Customizable project bootstrapper")]
+struct Cli {
+    #[command(subcommand)]
+    command: Commands,
 }
 
 fn main() -> anyhow::Result<()> {

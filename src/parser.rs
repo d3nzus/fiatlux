@@ -1,4 +1,4 @@
-use anyhow::{bail, Context};
+use anyhow::{Context, bail};
 use std::path::Path;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -18,19 +18,35 @@ fn tokenize(input: &str) -> Vec<Token> {
         match c {
             '#' => {
                 while let Some(&c) = chars.peek() {
-                    if c == '\n' { break; }
+                    if c == '\n' {
+                        break;
+                    }
                     chars.next();
                 }
             }
-            c if c.is_whitespace() => { chars.next(); }
-            '{' => { tokens.push(Token::LBrace); chars.next(); }
-            '}' => { tokens.push(Token::RBrace); chars.next(); }
-            ',' => { tokens.push(Token::Comma); chars.next(); }
+            c if c.is_whitespace() => {
+                chars.next();
+            }
+            '{' => {
+                tokens.push(Token::LBrace);
+                chars.next();
+            }
+            '}' => {
+                tokens.push(Token::RBrace);
+                chars.next();
+            }
+            ',' => {
+                tokens.push(Token::Comma);
+                chars.next();
+            }
             '"' => {
                 chars.next();
                 let mut s = String::new();
                 while let Some(&c) = chars.peek() {
-                    if c == '"' { chars.next(); break; }
+                    if c == '"' {
+                        chars.next();
+                        break;
+                    }
                     s.push(c);
                     chars.next();
                 }
@@ -118,7 +134,10 @@ impl Parser {
 
         loop {
             match self.peek().cloned() {
-                Some(Token::RBrace) => { self.next(); break; }
+                Some(Token::RBrace) => {
+                    self.next();
+                    break;
+                }
                 Some(Token::Ident(name)) => {
                     self.next();
                     if let Some(Token::LBrace) = self.peek() {
@@ -129,7 +148,10 @@ impl Parser {
                         nodes.push(FsNode::File(name));
                     }
                 }
-                other => bail!("expected identifier or '}}' in directories block, found {:?}", other),
+                other => bail!(
+                    "expected identifier or '}}' in directories block, found {:?}",
+                    other
+                ),
             }
         }
 
@@ -148,7 +170,10 @@ impl Parser {
                         self.next();
                     }
                 }
-                other => bail!("expected string or '}}' in scripts block, found {:?}", other),
+                other => bail!(
+                    "expected string or '}}' in scripts block, found {:?}",
+                    other
+                ),
             }
         }
 
