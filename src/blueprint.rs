@@ -38,8 +38,9 @@ pub fn generate_fs(entries: &[FsEntry], root: &Path) -> anyhow::Result<()> {
             FsEntry::Dir(map) => {
                 for (name, children) in map {
                     let dir_path = root.join(name);
-                    std::fs::create_dir_all(&dir_path)
-                        .with_context(|| format!("could not create dir `{}`", dir_path.display()))?;
+                    std::fs::create_dir_all(&dir_path).with_context(|| {
+                        format!("could not create dir `{}`", dir_path.display())
+                    })?;
                     generate_fs(children, &dir_path)?;
                 }
             }

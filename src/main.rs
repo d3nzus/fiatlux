@@ -1,6 +1,6 @@
-mod file_handler;
-mod cli;
 mod blueprint;
+mod cli;
+mod file_handler;
 
 fn main() {
     match cli::matchCommand() {
