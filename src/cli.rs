@@ -2,10 +2,11 @@
 cli.rs contains cli logic using clap crate
 */
 
+use crate::blueprint::{generate_fs, parse_source};
 use crate::file_handler::blueprints_dir;
-use anyhow::Context;
+use anyhow::{bail, Context};
 use clap::{Parser, Subcommand};
-use std::path::{Path, PathBuf};
+use std::path::{Component, Path, PathBuf};
 
 // the CLI struct inherits from clap::Parser, which provides the command line parsing functionality
 #[derive(Parser)]
@@ -42,7 +43,44 @@ pub fn matchCommand() -> anyhow::Result<()> {
             project_name,
             dry_run,
         } => {
-            println!("Scaffolding '{project_name}' with '{blueprint}' (dry_run={dry_run})");
+            let project_name_path = Path::new(&project_name);
+            if !matches!(project_name_path.components().next(), Some(Component::Normal(_)))
+                || project_name_path.components().count() != 1
+            {
+                bail!("project name must be a single folder name");
+            }
+
+            let dir = blueprints_dir()?;
+            let blueprint_path = dir.join(format!("{blueprint}.yaml"));
+            let source = std::fs::read_to_string(&blueprint_path).with_context(|| {
+                format!("could not read blueprint `{blueprint}` at `{}`", blueprint_path.display())
+            })?;
+
+            // parse blueprint
+            let blueprint_def = parse_source(&source).with_context(|| {
+                format!("could not parse blueprint `{}`", blueprint_path.display())
+            })?;
+
+            let destination = std::env::current_dir()
+                .context("could not determine the current working directory")?
+                .join(&project_name);
+
+            if dry_run {
+                println!(
+                    "Would scaffold '{project_name}' with '{blueprint}' at {}",
+                    destination.display()
+                );
+                return Ok(());
+            }
+
+            std::fs::create_dir(&destination).with_context(|| {
+                format!("could not create project directory `{}`", destination.display())
+            })?;
+            generate_fs(&blueprint_def.directories, &destination).with_context(|| {
+                format!("could not generate project in `{}`", destination.display())
+            })?;
+
+            println!("Scaffolded '{project_name}' at {}", destination.display());
         }
         Commands::List => {
             let dir = blueprints_dir()?;
