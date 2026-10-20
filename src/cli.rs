@@ -3,7 +3,7 @@ cli.rs contains cli logic using clap crate
 */
 
 use crate::blueprint::{generate_fs, parse_source};
-use crate::file_handler::blueprints_dir;
+use crate::file_handler::{blueprints_dir, run_scripts};
 use anyhow::{bail, Context};
 use clap::{Parser, Subcommand};
 use std::path::{Component, Path, PathBuf};
@@ -34,7 +34,7 @@ pub enum Commands {
     },
 }
 
-pub fn matchCommand() -> anyhow::Result<()> {
+pub fn match_command() -> anyhow::Result<()> {
     let cli = Cli::parse();
 
     match cli.command {
@@ -76,9 +76,17 @@ pub fn matchCommand() -> anyhow::Result<()> {
             std::fs::create_dir(&destination).with_context(|| {
                 format!("could not create project directory `{}`", destination.display())
             })?;
+            println!("Created project directory `{}`", destination.display());
+
             generate_fs(&blueprint_def.directories, &destination).with_context(|| {
                 format!("could not generate project in `{}`", destination.display())
             })?;
+            println!("Generated project files in `{}`", destination.display());
+
+            run_scripts(&blueprint_def.scripts, &destination).with_context(|| {
+                format!("could not run blueprint scripts in `{}`", destination.display())
+            })?;
+            println!("Successfully ran blueprint scripts");
 
             println!("Scaffolded '{project_name}' at {}", destination.display());
         }
@@ -90,7 +98,7 @@ pub fn matchCommand() -> anyhow::Result<()> {
                 .with_context(|| format!("could not read `{}`", dir.display()))?
                 .filter_map(|entry| entry.ok())
                 .map(|entry| entry.path())
-                .filter(|path| path.extension().and_then(|e| e.to_str()) == Some(".yaml"))
+                .filter(|path| path.extension().and_then(|e| e.to_str()) == Some("yaml"))
                 .filter_map(|path| path.file_stem().map(|s| s.to_string_lossy().into_owned()))
                 .collect();
 

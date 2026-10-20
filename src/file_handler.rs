@@ -1,4 +1,4 @@
-use anyhow::Context;
+use anyhow::{Context, bail};
 use std::path::{Path, PathBuf};
 
 // create fialtux/blueprints folder if not already created, when it exists, return a path to it
@@ -28,4 +28,18 @@ fn run_shell(cmd_str: &str, cwd: &Path) -> anyhow::Result<std::process::ExitStat
         .with_context(|| format!("failed to run `{cmd_str}`"))?;
 
     Ok(status)
+}
+
+// runs blueprint scripts in order from the generated project directory
+pub fn run_scripts(scripts: &[String], cwd: &Path) -> anyhow::Result<()> {
+    for script in scripts {
+        let status = run_shell(script, cwd)
+            .with_context(|| format!("failed to execute blueprint script `{script}`"))?;
+
+        if !status.success() {
+            bail!("blueprint script `{script}` exited with status {status}");
+        }
+    }
+
+    Ok(())
 }

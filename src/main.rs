@@ -3,7 +3,7 @@ mod cli;
 mod file_handler;
 
 fn main() {
-    match cli::matchCommand() {
+    match cli::match_command() {
         Ok(_) => {}
         Err(e) => {
             eprintln!("Error: {e:?}");
