@@ -4,13 +4,17 @@ cli.rs contains cli logic using clap crate
 
 use crate::blueprint::{generate_fs, parse_source};
 use crate::file_handler::{blueprints_dir, run_scripts};
-use anyhow::{bail, Context};
+use anyhow::{Context, bail};
 use clap::{Parser, Subcommand};
 use std::path::{Component, Path, PathBuf};
 
 // the CLI struct inherits from clap::Parser, which provides the command line parsing functionality
 #[derive(Parser)]
-#[command(name = "fiatlux", version, about = "Customizable project bootstrapper by D3nzus")]
+#[command(
+    name = "fiatlux",
+    version,
+    about = "Customizable project bootstrapper by D3nzus"
+)]
 pub struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -44,8 +48,10 @@ pub fn match_command() -> anyhow::Result<()> {
             dry_run,
         } => {
             let project_name_path = Path::new(&project_name);
-            if !matches!(project_name_path.components().next(), Some(Component::Normal(_)))
-                || project_name_path.components().count() != 1
+            if !matches!(
+                project_name_path.components().next(),
+                Some(Component::Normal(_))
+            ) || project_name_path.components().count() != 1
             {
                 bail!("project name must be a single folder name");
             }
@@ -53,7 +59,10 @@ pub fn match_command() -> anyhow::Result<()> {
             let dir = blueprints_dir()?;
             let blueprint_path = dir.join(format!("{blueprint}.yaml"));
             let source = std::fs::read_to_string(&blueprint_path).with_context(|| {
-                format!("could not read blueprint `{blueprint}` at `{}`", blueprint_path.display())
+                format!(
+                    "could not read blueprint `{blueprint}` at `{}`",
+                    blueprint_path.display()
+                )
             })?;
 
             // parse blueprint
@@ -74,7 +83,10 @@ pub fn match_command() -> anyhow::Result<()> {
             }
 
             std::fs::create_dir(&destination).with_context(|| {
-                format!("could not create project directory `{}`", destination.display())
+                format!(
+                    "could not create project directory `{}`",
+                    destination.display()
+                )
             })?;
             println!("Created project directory `{}`", destination.display());
 
@@ -84,7 +96,10 @@ pub fn match_command() -> anyhow::Result<()> {
             println!("Generated project files in `{}`", destination.display());
 
             run_scripts(&blueprint_def.scripts, &destination).with_context(|| {
-                format!("could not run blueprint scripts in `{}`", destination.display())
+                format!(
+                    "could not run blueprint scripts in `{}`",
+                    destination.display()
+                )
             })?;
             println!("Successfully ran blueprint scripts");
 
@@ -92,7 +107,7 @@ pub fn match_command() -> anyhow::Result<()> {
         }
         Commands::List => {
             let dir = blueprints_dir()?;
-            
+
             // read all files in the blueprints directory, filter for .yaml files, and collect their names
             let mut names: Vec<String> = std::fs::read_dir(&dir)
                 .with_context(|| format!("could not read `{}`", dir.display()))?
